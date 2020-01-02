@@ -9,5 +9,15 @@
 
 int main(){
     
+    int semd;
+    int r;
+    int v;
+
+    semd = semget(KEY, 1, 0);
+    struct sembuf sb;
+    sb.sem_num = 0;
+    
+    printf("Trying to get in\n");
+    
     
 }
