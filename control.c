@@ -29,11 +29,16 @@ int main(int argc, char * argv[]) {
     sb.sem_num = 0;
     sb.sem_op = -1;
     
+    union semun us;
+    us.val = 1;
+
+    
     if (strcmp(argv[1], "-c")==0) {
         shmd = shmget(SHMKEY, SEG_SIZE, IPC_CREAT | 0644);
         data = shmat(shmd, 0, 0);
         printf("Created shared memory\n");
         semd = semget(SEMKEY, 1, IPC_CREAT | IPC_EXCL | 0644);
+        r = semctl(semd, 0, SETVAL, us);
         printf("Created semaphore\n");
         fd = open("semaphone.txt", O_CREAT | O_TRUNC | O_RDWR, 0644);
         printf("Created file\n");
