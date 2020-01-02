@@ -18,6 +18,7 @@ int main(int argc, char * argv[]) {
     int fd;
     int n;
     char buff[100];
+    memset(buff, 0, 100);
     
     int shmd;
     char * data;

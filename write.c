@@ -41,7 +41,7 @@ int main(){
     
     printf("Your new addition: ");
     fgets(buff, sizeof(buff), stdin);
-    write(fd, buff, sizeof(buff));
+    write(fd, buff, strlen(buff));
     strcpy(data, buff);
     shmdt(data);
     sb.sem_op = 1;
