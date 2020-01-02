@@ -25,6 +25,10 @@ int main(int argc, char * argv[]) {
     int semd;
     int v, r;
     
+    struct sembuf sb;
+    sb.sem_num = 0;
+    sb.sem_op = -1;
+    
     if (strcmp(argv[1], "-c")==0) {
         shmd = shmget(SHMKEY, SEG_SIZE, IPC_CREAT | 0644);
         data = shmat(shmd, 0, 0);
@@ -37,6 +41,9 @@ int main(int argc, char * argv[]) {
     }
 
     if (strcmp(argv[1], "-r")==0) {
+        semd = semget(SEMKEY, 1, 0);
+        semop(semd, &sb, 1);
+        shmd = shmget(SHMKEY, SEG_SIZE, 0);
         printf("The story so far:\n");
         fd = open("semaphone.txt", O_RDONLY);
         read(fd, buff, 100);
@@ -45,6 +52,8 @@ int main(int argc, char * argv[]) {
         printf("Segment deleted\n");
         semctl(semd, IPC_RMID, 0);
         printf("Semaphore deleted\n");
+        remove("semaphone.txt");
+        printf("File deleted\n");
     }
     
     if (strcmp(argv[1], "-v")==0) {
@@ -53,5 +62,7 @@ int main(int argc, char * argv[]) {
         read(fd, buff, 100);
         printf("%s\n", buff);
     }
+    
+    return 0;
 
 }

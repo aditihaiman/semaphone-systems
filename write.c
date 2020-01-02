@@ -26,14 +26,15 @@ int main(){
     int semd;
     int v, r;
 
-    semd = semget(SEMKEY, 1, 0);
+    
     struct sembuf sb;
     sb.sem_num = 0;
     sb.sem_op = -1;
     printf("Trying to get in\n");
+    semd = semget(SEMKEY, 1, 0);
     semop(semd, &sb, 1);
     
-    shmd = shmget(SHMKEY, SEG_SIZE, IPC_CREAT | 0644);
+    shmd = shmget(SHMKEY, SEG_SIZE, 0);
     
     fd = open("semaphone.txt", O_RDWR);
     
@@ -44,10 +45,11 @@ int main(){
     fgets(buff, sizeof(buff), stdin);
     
     write(fd, buff, sizeof(buff));
-    
+//    strcpy(data, buff);
+//    shmdt(data);
     sb.sem_op = 1;
     semop(semd, &sb, 1);
     
-    
+//    return 0;
     
 }
