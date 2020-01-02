@@ -9,7 +9,8 @@
 #include <sys/shm.h>
 #include <fcntl.h>
 
-#define KEY 24601
+#define SHMKEY 24601
+#define SEMKEY 24602
 #define SEG_SIZE 200
 
 int main(int argc, char * argv[]) {
@@ -20,16 +21,15 @@ int main(int argc, char * argv[]) {
     
     int shmd;
     char * data;
-    char input[3];
     
     int semd;
     int v, r;
     
     if (strcmp(argv[1], "-c")==0) {
-        shmd = shmget(KEY, SEG_SIZE, IPC_CREAT | 0644);
+        shmd = shmget(SHMKEY, SEG_SIZE, IPC_CREAT | 0644);
         data = shmat(shmd, 0, 0);
         printf("Created shared memory\n");
-        semd = semget(KEY, 1, IPC_CREAT | IPC_EXCL | 0644);
+        semd = semget(SEMKEY, 1, IPC_CREAT | IPC_EXCL | 0644);
         printf("Created semaphore\n");
         fd = open("semaphone.txt", O_CREAT | O_TRUNC | O_RDWR, 0644);
         printf("Created file\n");
